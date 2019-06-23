@@ -1,0 +1,5 @@
+# Ignore Node.js modules
+/you_cannot_see_the_flag/node_modules
+/tell_me_your_info/node_modules
+/crash_and_splash_back_end/node_modules
+/rough_png_image_web/node_modules

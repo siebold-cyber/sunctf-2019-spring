@@ -1,0 +1,15 @@
+version: "3"
+services:
+  frontend:
+    container_name: cas-frontend
+    build: ./frontend/
+    ports:
+      - "10005:80"
+    depends_on:
+      - backend
+
+  backend:
+    container_name: cas-backend
+    build: ./backend/
+    ports:
+      - "11001:8080"

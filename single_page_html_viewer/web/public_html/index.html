@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Single Page HTML Viewer</title>
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <h1>Single Page HTML Viewer</h1>
+        <p>You can view the web page only to enter the page path!</p>
+        <ul>
+          <li>
+            <a href="query.php?source">PHP file source code</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <p>This Application has below pages.</p>
+        <ul>
+          <li>pages/cicero.html</li>
+          <li>pages/lorem_ipsum.html</li>
+          <li>pages/kafka.html</li>
+        </ul>
+      </div>
+
+      <p>[CAUTION] If you access flag file, it will be denied!</p>
+
+      <div>
+        <input type="text" placeholder="Path" v-model="path">
+        <button @click="getPage()">Get Page</button>
+      </div>
+
+      <hr>
+
+      <p class="error" v-if="error"> Error: {{ error }} </p>
+      <div v-html="content"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: function () {
+          return {
+            path: "",
+            content: "",
+            error: null
+          }
+        },
+        methods: {
+          getPage: function () {
+            var that = this
+
+            if (this.path.match(/flag/) || !this.path.match(/.html/)) {
+              this.path = null
+              this.content = null
+              this.error = 'Access Denied'
+              return
+            }
+
+            fetch('query.php', {
+              'method': 'POST',
+              'headers': {
+                'Content-Type': 'application/json'
+              },
+              'body': JSON.stringify({
+                'page': this.path
+              })
+            }).then(resp => resp.json()).then(resp => {
+              that.path = null
+              that.error = null
+              that.content = resp.content
+            })
+            return
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

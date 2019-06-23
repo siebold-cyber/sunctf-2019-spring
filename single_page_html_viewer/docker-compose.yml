@@ -1,0 +1,7 @@
+version: "3"
+services:
+  web:
+    container_name: sphv-web
+    build: ./web/
+    ports:
+      - "10002:8080"

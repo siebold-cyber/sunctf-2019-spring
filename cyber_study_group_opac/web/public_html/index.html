@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cyber Study Group OPAC</title>
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <h1>Cyber Study Group OPAC</h1>
+        <p>Please insert the book name you want to rent, and click the submit button.</p>
+        <p>If you want to reset the page, please click the reset button.</p>
+      </div>
+
+      <div>
+        <input type="text" placeholder="Please insert the book name" v-model="input">
+        <button type="button" @click="getBooks()">Submit</button>
+        <button type="button" @click="fetchAll()">Reset</button>
+      </div>
+
+      <div>
+        <p v-if="fetching">Fetching...</p>
+        <p class="error" v-if="error">Error: {{ error }}</p>
+      </div>
+
+      <hr>
+
+      <div v-if="!fetching">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Auther</th>
+              <th>ISBN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="book in books" :key="book.id">
+              <th>{{ book.id }}</th>
+              <td>{{ book.name }}</td>
+              <td>{{ book.author }}</td>
+              <td>{{ book.ISBN }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: function () {
+          return {
+            input: "",
+            books: [],
+            fetching: false,
+            error: null
+          }
+        },
+        methods: {
+          fetchAll: async function () {
+            var that = this
+
+            this.books = []
+            this.fetching = true
+            this.input = null
+
+            await fetch('query.php', {
+              'method': 'POST',
+              'headers': {
+                'Content-Type': 'application/json'
+              },
+              'body': JSON.stringify({
+                'req': 'fetchAll'
+              })
+            }).then(resp => resp.json()).then(resp => {
+              that.fetching = false
+              that.error = null
+              that.books = resp.content
+            })
+            return
+          },
+
+          getBooks: async function () {
+            var that = this
+
+            this.books = []
+            this.fetching = true
+
+            await fetch('query.php', {
+              'method': 'POST',
+              'headers': {
+                'Content-Type': 'application/json'
+              },
+              'body': JSON.stringify({
+                "req": "getBooks",
+                "name": that.input
+              })
+            }).then(resp => resp.json()).then(resp => {
+              that.fetching = false
+              that.error = null
+              that.input = null
+              that.books = resp.content
+            })
+            return
+          }
+        },
+        mounted () {
+          this.fetchAll()
+        }
+      })
+    </script>
+  </body>
+</html>

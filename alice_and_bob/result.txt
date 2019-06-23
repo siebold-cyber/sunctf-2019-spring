@@ -1,0 +1,3 @@
+Alice's identify: 37749628
+Bob's identify: 55628524
+Encrypted flag: QUxJQ0VfTE9WRVNfQk9CJdLq31w1QYpG0LgHRMmUh2lplnnO7UN2qnRGKG4NjQ/BVIpmL/dGJtGtOQMT8+r67gatVLn2JlMzQjOVglcwFUg=
