@@ -13,7 +13,6 @@ img_pixels = np.array(img_pixels)
 print(img_pixels.tolist())
 
 gen_pixels = np.full((height, 3), 255)
-print(gen_pixels.tolist())
 
 arr = gen_pixels - img_pixels
 print(arr.tolist())
