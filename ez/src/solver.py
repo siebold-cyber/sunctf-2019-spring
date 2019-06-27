@@ -11,9 +11,9 @@ while(True):
     text = zlib.decompress(text)
 
     dec_text = text.decode('utf-8')
-    print('{0}: {1}'.format(index, dec_text))
 
     if (dec_text.startswith('SUNCTF{')):
+        print('{0}: {1}'.format(index, dec_text))
         break
     else:
         index += 1
